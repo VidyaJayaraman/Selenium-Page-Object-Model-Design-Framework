@@ -46,14 +46,11 @@ public class ProjectSpecificMethods {
 	public String testName, testDescription, testAuthor, testCategory;
 
 	
-//	public static Properties prop1;
-//	public static ChromeDriver driver; // Sequencial Execution
+
+	public static ChromeDriver driver; 
 	
 	@BeforeMethod
 	public void preCondition() throws IOException {
-
-		// set the node
-		node = test.createNode(testName);
 
 		
 		WebDriverManager.chromedriver().setup();
@@ -62,21 +59,7 @@ public class ProjectSpecificMethods {
 		driver.get("http://leaftaps.com/opentaps/control/main");
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		wait = new WebDriverWait(driver,Duration.ofSeconds(10));
-
-//		// Get URL and Language From Property File
-//		Properties prop = new Properties();
-//		FileInputStream fis = new FileInputStream(new File("./src/main/resources/config.properties"));
-//		prop.load(fis);
-//		String url = prop.getProperty("url");
-//		driver.get("http://leaftaps.com/opentaps/control/main");
-//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-//		String lang = prop.getProperty("lang2");
-//	    prop1 = new Properties();
-//		FileInputStream fis1 = new FileInputStream(new File("./src/main/resources/" + lang + ".properties"));
-//		prop1.load(fis1);
-//		System.out.println(prop1.getProperty("lead"));
-//		System.out.println(prop1.getProperty("create_lead"))
-		
+			
 	}
 
 	@DataProvider(name = "fetchData")
@@ -96,41 +79,6 @@ public class ProjectSpecificMethods {
 
 	}
 	
-	@BeforeSuite
-	public void startReport() {
-		ExtentHtmlReporter reporter = new ExtentHtmlReporter("./reports/result.html");
-		extent = new ExtentReports();
-		extent.attachReporter(reporter);
-	}
 	
-	@BeforeClass
-	public void testDetails() {
-		test = extent.createTest(testName, testDescription);
-		test.assignAuthor(testAuthor);
-		test.assignCategory(testCategory);
-	}
 	
-	@AfterSuite
-	public void stopReport() {
-		extent.flush();
-	}
-
-	public void reportStep(String message, String status) throws IOException {
-		if (status.equalsIgnoreCase("pass")) {
-			node.pass(message, MediaEntityBuilder.createScreenCaptureFromPath(".././images/img" + takeSnap() + ".png").build());
-		} else if (status.equalsIgnoreCase("fail")) {
-			node.fail(message, MediaEntityBuilder.createScreenCaptureFromPath(".././images/img" + takeSnap() + ".png").build());
-			throw new RuntimeException("See the report for details");
-		}
-	}
-	
-	public int takeSnap() throws IOException {
-		int random = (int) (Math.random() * 9999999);
-		File src = driver.getScreenshotAs(OutputType.FILE);
-		File desc = new File("./images/img" + random+".png");
-		FileUtils.copyFile(src, desc);
-		return random;
-	}
-
-
 }
