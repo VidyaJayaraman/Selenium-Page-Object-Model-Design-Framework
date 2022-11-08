@@ -2,7 +2,6 @@ package com.testleaf.testcases;
 
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.testleaf.base.ProjectSpecificMethods;
 import com.testleaf.pages.LoginPage;
 
